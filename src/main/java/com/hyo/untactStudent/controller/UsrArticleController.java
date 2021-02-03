@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hyo.untactStudent.dto.Article;
+import com.hyo.untactStudent.util.Util;
 
 @Controller
 public class UsrArticleController {
@@ -49,7 +50,10 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
-	public Map<String, Object> doAdd(String regDate, String title, String body) {
+	public Map<String, Object> doAdd( String title, String body) {
+		
+		String regDate = Util.getNowDateStr();
+		
 		articles.add(new Article(++articlesLastId, regDate, title, body));
 		
 		Map<String, Object> rs = new HashMap<>();
@@ -59,6 +63,9 @@ public class UsrArticleController {
 		return rs;
 	}
 	
+	
+
+
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public Map<String, Object> doDelete(int id) {
@@ -105,7 +112,6 @@ public class UsrArticleController {
 				break;
 			}
 		}
-		
 		Map<String, Object> rs = new HashMap<>();
 		
 		if(selArticle == null) {
