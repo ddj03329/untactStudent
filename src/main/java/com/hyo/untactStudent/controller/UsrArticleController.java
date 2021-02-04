@@ -56,11 +56,7 @@ public class UsrArticleController {
 		String updateDate = regDate;
 		articles.add(new Article(++articlesLastId, regDate, updateDate, title, body));
 		
-		Map<String, Object> rs = new HashMap<>();
-		rs.put("resultCode", "S-1");
-		rs.put("msg", "게시물이 추가 되었습니다.");
-		rs.put("id", articlesLastId);
-		return rs;
+		return Util.mapOf("resultCode", "S-1","msg", "게시물이 추가 되었습니다.","id", articlesLastId);
 	}
 	
 	
@@ -72,21 +68,16 @@ public class UsrArticleController {
 		
 		boolean deleteArticleRs = deleteArticle(id);
 	
-		Map<String, Object> rs = new HashMap<>();
-		if(deleteArticleRs) {
-			rs.put("resultCode", "S-1");
-			rs.put("msg", String.format("%d번 게시물이 삭제되었습니다.", id));	
-		}
-		else {
-			rs.put("resultCode", "F-1");
-			rs.put("msg", "없는 게시물입니다.");
+		if(deleteArticleRs == false) {
+			return Util.mapOf("resultCode", "F-1", "msg", "없는 게시물입니다.");
 			
-		}	
-		return rs;
+		}
+		
+		return Util.mapOf("resultCode", "S-1", "msg", String.format("%d번 게시물이 삭제되었습니다.", id));
+
+		
 		
 	}
-	
-	
 	
 
 
@@ -114,19 +105,18 @@ public class UsrArticleController {
 		}
 		Map<String, Object> rs = new HashMap<>();
 		
-		if(selArticle == null) {
-			rs.put("resultCode", "F-1");
-			rs.put("msg", String.format("%d번 게시물이 존재하지 않습니다.", id));	
-		}
-		else {
-			selArticle.setUpdateDate(Util.getNowDateStr());
-			selArticle.setTitle(title);
-			selArticle.setBody(body);
-			rs.put("resultCode", "S-1");
-			rs.put("msg", String.format("%d번 게시물이 수정되었습니다.", id));	
+		if(selArticle == null) {	
 			
-		}	
-		return rs;
+			return Util.mapOf("resultCode", "F-1","msg", String.format("%d번 게시물이 존재하지 않습니다.", id));
+			
+		}
+			
+		selArticle.setUpdateDate(Util.getNowDateStr());
+		selArticle.setTitle(title);
+		selArticle.setBody(body);
+		
+		return Util.mapOf("resultCode", "S-1","msg", String.format("%d번 게시물이 수정되었습니다.", id));
+
 		
 		
 	}
